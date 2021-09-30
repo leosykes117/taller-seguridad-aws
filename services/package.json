@@ -1,0 +1,16 @@
+{
+  "name": "services",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "npm install && mkdir -p layers/aws_sdk/nodejs && cp -r node_modules layers/aws_sdk/nodejs/ && cp -v package.json layers/aws_sdk/nodejs/ && cd layers/aws_sdk/ && zip -r aws-sdk-layer.zip nodejs",
+    "reset": "rm -vrf layers/aws_sdk && rm -vrf node_modules"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@aws-sdk/client-cognito-identity-provider": "^3.34.0"
+  }
+}

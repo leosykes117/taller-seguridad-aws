@@ -10,17 +10,24 @@ resource "aws_s3_bucket" "lambda_bucket" {
     }
 }
 
-data "archive_file" "lambda_code_hello_world" {
+data "archive_file" "lambda_package_sign_up" {
     type        = "zip"
-    source_file = abspath("${path.root}/../services/hello-world/bin/hello-world")
-    output_path = abspath("${path.root}/../services/hello-world/bin/hello-world.zip")
+    output_path = abspath("${path.root}/../services/auth/signup.zip")
+    source {
+        content = file("${abspath("${path.root}/../services/auth/modules/signup/index.js")}")
+        filename = "modules/signup/index.js"
+    }
+    source {
+        content = file("${abspath("${path.root}/../services/auth/signup_handler.js")}")
+        filename = "signin_handler.js"
+    }
 }
 
-resource "aws_s3_bucket_object" "lambda_hello_world" {
+resource "aws_s3_bucket_object" "lambda_code_sign_up" {
     bucket    = aws_s3_bucket.lambda_bucket.id
 
-    key       = "hello-world.zip"
-    source    = data.archive_file.lambda_code_hello_world.output_path
+    key       = basename(data.archive_file.lambda_package_sign_up.output_path)
+    source    = data.archive_file.lambda_package_sign_up.output_path
 
-    etag      = filemd5(data.archive_file.lambda_code_hello_world.output_path)
+    etag      = filemd5(data.archive_file.lambda_package_sign_up.output_path)
 }

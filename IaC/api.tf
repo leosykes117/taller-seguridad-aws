@@ -18,14 +18,14 @@ resource "aws_apigatewayv2_integration" "api_integration" {
     api_id              = aws_apigatewayv2_api.api_gateway.id
     integration_method  = "POST"
     integration_type    = "AWS_PROXY"
-    integration_uri     = aws_lambda_function.hello_world.invoke_arn
+    integration_uri     = aws_lambda_function.sign_up.invoke_arn
 }
 
-resource "aws_apigatewayv2_route" "hello_world" {
+resource "aws_apigatewayv2_route" "sign_up" {
     api_id              = aws_apigatewayv2_api.api_gateway.id
-    authorizer_id       = aws_apigatewayv2_authorizer.api_authorizer.id
-    authorization_type  = "JWT"
-    route_key           = "POST /hello"
+#    authorizer_id       = aws_apigatewayv2_authorizer.api_authorizer.id
+#    authorization_type  = "JWT"
+    route_key           = "POST /signup"
     target              = "integrations/${aws_apigatewayv2_integration.api_integration.id}"
 }
 
@@ -56,7 +56,7 @@ resource "aws_apigatewayv2_stage" "lambda" {
 resource "aws_lambda_permission" "lambda_permission" {
     statement_id    = "AllowExecutionFromAPIGateway"
     action          = "lambda:InvokeFunction"
-    function_name   = aws_lambda_function.hello_world.function_name
+    function_name   = aws_lambda_function.sign_up.function_name
     principal       = "apigateway.amazonaws.com"
 
     source_arn      = "${aws_apigatewayv2_api.api_gateway.execution_arn}/*/*"
