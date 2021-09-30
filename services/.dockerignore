@@ -1,5 +1,0 @@
-Dockerfile
-Makefile
-
-# Ignora todos los archivos que haya dentro de la carpeta bin
-**/bin/*
